@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Profile của Hồng Hân</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- ✅ Preload Fonts and Icons for faster first paint -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style">
+
+    <!-- ✅ Load styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- ✅ Optimized favicon (use .png instead of .ico for faster load) -->
+    <link rel="preload" href="profile_pic/bear.png" as="image">
+    <link rel="icon" href="profile_pic/bear.ico" type="image/png">
+    <link rel="apple-touch-icon" href="profile_pic/bear.png">
+
+    <!-- ✅ Load Font Awesome async so it doesn’t block rendering -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    </noscript>
+</head>
+
+<body>
+    <main class="card" role="main" aria-labelledby="profile-name">
+        <div class="profile-layout">
+            <!-- LEFT COLUMN -->
+            <div class="col-left">
+                <div class="avatar-wrap">
+                    <img src="profile_pic/avatar.JPG" alt="Portrait of [Han]" class="avatar" />
+                </div>
+
+                <!-- Stats now UNDER the avatar -->
+                <div class="stats">
+                    <div class="stat">
+                        <span>Height:</span>
+                        <strong>165cm</strong>
+                    </div>
+                    <div class="stat">
+                        <span>Weight:</span>
+                        <strong>52kg</strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="col-right info-wrap">
+                <h1 id="profile-name">Lê Thị Hồng Hân</h1>
+
+                <!-- All contact links, one per row -->
+                <section class="links links-list" aria-label="Contact and social">
+                    <a class="btn contact" href="tel:+84123456789">
+                        <i class="fa-solid fa-phone"></i><span>+84&nbsp;777&nbsp;900&nbsp;808</span>
+                    </a>
+
+                    <a class="btn contact" href="mailto:hanle23082000@gmail.com">
+                        <i class="fa-solid fa-envelope"></i><span>hanle23082000@gmail.com</span>
+                    </a>
+
+                    <a class="btn social fb" href="https://www.facebook.com/share/16ofuvgkmw/?mibextid=wwXIfr"
+                        target="_blank" rel="noopener">
+                        <i class="fa-brands fa-facebook-f"></i><span>Facebook</span>
+                    </a>
+
+                    <a class="btn social tiktok" href="https://tiktok.com/@rosehan.2x" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-tiktok"></i><span>TikTok</span>
+                    </a>
+
+                    <a class="btn social ig" href="https://www.instagram.com/lthhan0?igsh=N2loNTAzcm1xcjQ2"
+                        target="_blank" rel="noopener">
+                        <i class="fa-brands fa-instagram"></i><span>Instagram</span>
+                    </a>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Gallery -->
+    <section class="gallery" aria-label="Media gallery">
+        <div class="tabs" role="tablist" aria-label="Sets">
+            <!-- None selected initially -->
+            <button class="tab" id="tab-elegance" role="tab" aria-selected="false" aria-controls="set1"
+                data-target="set1">Elegance</button>
+            <button class="tab" id="tab-energetic" role="tab" aria-selected="false" aria-controls="set2"
+                data-target="set2">Energetic</button>
+            <button class="tab" id="tab-clips" role="tab" aria-selected="false" aria-controls="clips"
+                data-target="clips">Clips</button>
+        </div>
+
+        <!-- Image carousels -->
+        <div id="set1" class="carousel is-hidden" role="tabpanel" aria-labelledby="tab-elegance" hidden>
+            <button class="arrow left" aria-label="Previous"><span>‹</span></button>
+            <div class="strip" id="strip-set1"></div>
+            <button class="arrow right" aria-label="Next"><span>›</span></button>
+        </div>
+
+        <div id="set2" class="carousel is-hidden" role="tabpanel" aria-labelledby="tab-energetic" hidden>
+            <button class="arrow left" aria-label="Previous"><span>‹</span></button>
+            <div class="strip" id="strip-set2"></div>
+            <button class="arrow right" aria-label="Next"><span>›</span></button>
+        </div>
+
+        <!-- Video carousel (.mov clips) -->
+        <div id="clips" class="carousel is-hidden" role="tabpanel" aria-labelledby="tab-clips" hidden>
+            <button class="arrow left" aria-label="Previous"><span>‹</span></button>
+            <div class="strip" id="strip-clips"></div>
+            <button class="arrow right" aria-label="Next"><span>›</span></button>
+        </div>
+    </section>
+
+    <!-- Modal for clips -->
+    <div id="clipModal" class="modal" role="dialog" aria-modal="true" aria-label="Clip viewer">
+        <button class="close-btn" aria-label="Close">×</button>
+        <!-- playsinline kept for iOS; fullscreen is triggered in JS -->
+        <video id="modalVideo" controls playsinline></video>
+    </div>
+
+    <footer class="footer">
+        <small>© <span id="year"></span> Profile</small>
+    </footer>
+
+    <script>
+        // Footer year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ---------- FILE LISTS (edit these paths/names to match your folders) ----------
+        const files_set1 = ["img1.webp", "img2.webp", "img3.webp", "img4.webp", "img5.webp", "img6.webp", "img7.webp", "img8.webp", "img9.webp", "img10.webp", "img11.webp", "img12.webp", "img13.webp"]
+            .map(n => `picture_set1/${n}`);
+
+        const files_set2 = ["img1.webp", "img2.webp", "img3.webp", "img4.webp", "img5.webp", "img6.webp", "img7.webp", "img8.webp", "img9.webp", "img10.webp", "img11.webp"]
+            .map(n => `picture_set2/${n}`);
+
+        const clips_mov = ["vid1.mp4", "vid2.mp4", "vid3.mp4", "vid4.mp4", "vid5.mp4", "vid6.mp4", "vid7.mp4"]
+            .map(n => `clips/${n}`);
+
+        // ---------- RENDER HELPERS ----------
+        function renderImages(stripEl, urls) {
+            stripEl.innerHTML = urls
+                .map(src => `<figure class="cell"><img loading="lazy" src="${src}" alt=""></figure>`)
+                .join("");
+        }
+
+        // Thumbnails show a play icon overlay; click opens modal player
+        function renderClips(stripEl, urls) {
+            stripEl.innerHTML = urls.map(src => `
+                <figure class="cell clip-cell">
+                    <div class="clip-wrap">
+                        <video controls width="640" height="360" poster="black.jpg">
+                            <source src="${src.replace('.mov', '.mp4')}" type="video/mp4">
+                                Your browser does not support the video tag.
+                        </video>
+                        <div class="play-icon"></div>
+                    </div>
+                </figure>
+            `).join("");
+
+            // Click opens modal
+            stripEl.querySelectorAll(".clip-wrap").forEach(wrap => {
+                const video = wrap.querySelector("video");
+                const open = () => openModal(findPlayableSrc(video));
+                wrap.addEventListener("click", open);
+                wrap.addEventListener("keydown", e => {
+                    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+                });
+            });
+        }
+
+
+        function findPlayableSrc(videoEl) {
+            const sources = [...videoEl.querySelectorAll("source")].map(s => s.src);
+            return sources[0] || videoEl.src;
+        }
+
+        renderImages(document.getElementById('strip-set1'), files_set1);
+        renderImages(document.getElementById('strip-set2'), files_set2);
+        renderClips(document.getElementById('strip-clips'), clips_mov);
+
+        // ---------- CAROUSEL LOGIC ----------
+        function getStep(strip) {
+            const first = strip.querySelector('.cell');
+            if (!first) return strip.clientWidth * 0.2;
+            const rect = first.getBoundingClientRect();
+            const gap = parseFloat(getComputedStyle(strip).columnGap || getComputedStyle(strip).gap || 0);
+            return rect.width + gap; // one cell incl. gap
+        }
+
+        function makeCarousel(panelId) {
+            const panel = document.getElementById(panelId);
+            const strip = panel.querySelector('.strip');
+            const prev = panel.querySelector('.arrow.left');
+            const next = panel.querySelector('.arrow.right');
+
+            function step(dir) { strip.scrollBy({ left: getStep(strip) * dir, behavior: 'smooth' }); }
+
+            prev.addEventListener('click', () => step(-1));
+            next.addEventListener('click', () => step(1));
+
+            // swipe/drag
+            let sx = 0, sy = 0, active = false;
+            function start(e) { active = true; const t = e.touches ? e.touches[0] : e; sx = t.clientX; sy = t.clientY; }
+            function move(e) {
+                if (!active) return;
+                const t = e.touches ? e.touches[0] : e;
+                const dx = t.clientX - sx, dy = t.clientY - sy;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { active = false; dx < 0 ? step(1) : step(-1); }
+            }
+            function end() { active = false; }
+            panel.addEventListener('touchstart', start, { passive: true });
+            panel.addEventListener('touchmove', move, { passive: true });
+            panel.addEventListener('touchend', end);
+            panel.addEventListener('mousedown', start);
+            panel.addEventListener('mousemove', move);
+            panel.addEventListener('mouseup', end);
+            panel.addEventListener('mouseleave', end);
+
+            // keyboard when visible
+            document.addEventListener('keydown', (e) => {
+                if (panel.classList.contains('is-hidden')) return;
+                if (e.key === 'ArrowLeft') step(-1);
+                if (e.key === 'ArrowRight') step(1);
+            });
+
+            return {
+                show() { panel.classList.remove('is-hidden'); panel.removeAttribute('hidden'); },
+                hide() { panel.classList.add('is-hidden'); panel.setAttribute('hidden', ''); }
+            };
+        }
+
+        const car1 = makeCarousel('set1');
+        const car2 = makeCarousel('set2');
+        const carClips = makeCarousel('clips');
+
+        // ---------- TABS ----------
+        (function () {
+            const tabs = document.querySelectorAll('.tabs .tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+
+                    tab.classList.add('is-active');
+                    tab.setAttribute('aria-selected', 'true');
+
+                    car1.hide(); car2.hide(); carClips.hide();
+                    if (tab.dataset.target === 'set1') car1.show();
+                    if (tab.dataset.target === 'set2') car2.show();
+                    if (tab.dataset.target === 'clips') carClips.show();
+                });
+            });
+
+            // Keep this commented to start with none selected:
+            // document.getElementById('tab-elegance').click();
+        })();
+
+        // ---------- MODAL + AUTO-FULLSCREEN ON PHONES ----------
+        const modal = document.getElementById('clipModal');
+        const modalVideo = document.getElementById('modalVideo');
+        const closeBtn = modal.querySelector('.close-btn');
+
+        // NEW: try to enter fullscreen on small touch devices (iOS/Android)
+        function tryEnterFullscreen(videoEl) {
+            const isSmallScreen = Math.min(window.innerWidth, window.innerHeight) <= 768;
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (!(isSmallScreen && isTouch)) return;
+
+            // iOS Safari specific
+            if (typeof videoEl.webkitEnterFullscreen === 'function') {
+                try { videoEl.webkitEnterFullscreen(); return; } catch (e) { }
+            }
+            // Standards Fullscreen API
+            const req = videoEl.requestFullscreen || videoEl.webkitRequestFullscreen || videoEl.msRequestFullscreen;
+            if (req) {
+                try { req.call(videoEl); } catch (e) { }
+            }
+        }
+
+        function openModal(src) {
+            modal.classList.add('active');
+            modalVideo.innerHTML = `
+        <source src="${src}" type="video/quicktime">
+        <source src="${src}" type="video/mp4">
+      `;
+            modalVideo.load();
+
+            // Start playback, then nudge fullscreen shortly after
+            modalVideo.play().catch(() => { });
+            setTimeout(() => tryEnterFullscreen(modalVideo), 50);
+        }
+
+        function closeModal() {
+            // Exit standards fullscreen if used (iOS handles its own)
+            if (document.fullscreenElement && document.exitFullscreen) {
+                document.exitFullscreen().catch(() => { });
+            }
+            modalVideo.pause();
+            modalVideo.removeAttribute('src');
+            modalVideo.innerHTML = "";
+            modal.classList.remove('active');
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+    </script>
+</body>
+
+</html>
